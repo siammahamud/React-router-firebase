@@ -1,4 +1,4 @@
-import {  NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const NavBar = () => {
   return (
@@ -29,7 +29,7 @@ const NavBar = () => {
                 to={"/users"}
                 className={({ isActive }) =>
                   isActive
-                   ? "font-bold text-blue-600 text-lg p-2"
+                    ? "font-bold text-blue-600 text-lg p-2"
                     : " text-lg p-2"
                 }
               >
@@ -39,7 +39,7 @@ const NavBar = () => {
                 to={"/about"}
                 className={({ isActive }) =>
                   isActive
-                   ? "font-bold text-blue-600 text-lg p-2"
+                    ? "font-bold text-blue-600 text-lg p-2"
                     : " text-lg p-2"
                 }
               >
@@ -58,74 +58,14 @@ const NavBar = () => {
             </div>
 
             {/* Sign Up Button */}
-            <div className="hidden md:block mt-3">
-              <a
-                href="/signup"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-              >
-                Sign Up
-              </a>
-            </div>
+            <Link to={"/signup"}>
+              <div className="hidden md:block mt-3">
+                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                  Sign Up
+                </button>
+              </div>
+            </Link>
           </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              type="button"
-              className="text-gray-400 hover:text-white focus:outline-none focus:text-white"
-            >
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div id="mobile-menu" className="hidden md:hidden">
-        <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-          <a
-            href="/"
-            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
-          >
-            Home
-          </a>
-          <a
-            href="/users"
-            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
-          >
-            Users
-          </a>
-          <a
-            href="/about"
-            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
-          >
-            About
-          </a>
-          <a
-            href="/contact"
-            className="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium"
-          >
-            Contact
-          </a>
-          <a
-            href="/signup"
-            className="block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center"
-          >
-            Sign Up
-          </a>
         </div>
       </div>
     </nav>

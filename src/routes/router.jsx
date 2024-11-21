@@ -6,6 +6,7 @@ import Contact from "../pages/Contact";
 import NotFound from "../pages/NotFound";
 import Users from "../pages/Users";
 import UserDetails from "../pages/UserDetails";
+import SignUp from "../pages/SignUp";
 //import Users from "../pages/Users";
 // import UserDetails from "../pages/UserDetails";
 // import { loadData, loadSingleData } from "../utils/utils";
@@ -43,6 +44,10 @@ const Router = createBrowserRouter([
         element: <Contact />,
       },
     ],
+  },
+  {
+    path:"/signup",
+    element:<SignUp/>
   },
   {
     path: "*",
