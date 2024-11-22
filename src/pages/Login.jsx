@@ -4,7 +4,7 @@ import { TEInput, TERipple } from "tw-elements-react";
 
 import SocialLogin from "../components/SocialLogin";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { toast, ToastContainer } from "react-toastify";
+import { toast, ToastContainer} from "react-toastify";
 import { loginWithEmailAndPassword} from "../firebase/firebase"
 
 const Login = () => {

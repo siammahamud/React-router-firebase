@@ -1,15 +1,12 @@
-import Layout from "./pages/layout/layout"
-import 'tw-elements';
-
+import Layout from "./pages/layout/layout";
+import "tw-elements";
 
 function App() {
-  
-
   return (
     <>
-    <Layout/>
+      <Layout />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

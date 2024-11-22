@@ -8,6 +8,8 @@ import Users from "../pages/Users";
 import UserDetails from "../pages/UserDetails";
 import SignUp from "../pages/SignUp";
 import Login from "../pages/Login";
+import Reset from "../pages/Reset";
+import PrivateRoute from "./PrivateRoute";
 //import Users from "../pages/Users";
 // import UserDetails from "../pages/UserDetails";
 // import { loadData, loadSingleData } from "../utils/utils";
@@ -27,7 +29,7 @@ const Router = createBrowserRouter([
       },
       {
         path: "/users",
-        element: <Users />,
+        element: <PrivateRoute><Users /></PrivateRoute>,
         loader: () => fetch("https://jsonplaceholder.typicode.com/users"),
       },
       {
@@ -53,6 +55,10 @@ const Router = createBrowserRouter([
   {
     path:"login",
     element:<Login/>
+  },
+  {
+    path:"reset",
+    element:<Reset/>
   },
   {
     path: "*",

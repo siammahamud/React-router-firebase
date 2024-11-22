@@ -1,7 +1,14 @@
 /* eslint-disable no-useless-catch */
 import { createUserWithEmailAndPassword } from "firebase/auth/cordova";
 import { auth } from "./firebase.config.js";
-import { sendEmailVerification, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import {
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
+import { toast } from "react-toastify";
 
 const signupWithEmailandPassword = async (name, email, password) => {
   try {
@@ -23,16 +30,22 @@ const signupWithEmailandPassword = async (name, email, password) => {
   }
 };
 
-const loginWithEmailAndPassword = async (email, password)=> {
-try{
+const loginWithEmailAndPassword = async (email, password) => {
+  try {
     const response = await signInWithEmailAndPassword(auth, email, password);
     return response.user;
+  } catch (error) {
+    throw error;
+  }
+};
 
-}catch(error){
-    throw(error)
-}
-}
+const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    throw error;
+  }
+};
 
 
-export { signupWithEmailandPassword, loginWithEmailAndPassword};
-
+export { signupWithEmailandPassword, loginWithEmailAndPassword, resetPassword};

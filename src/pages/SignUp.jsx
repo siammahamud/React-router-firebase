@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { TEInput, TERipple } from "tw-elements-react";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
 import { signupWithEmailandPassword } from "../firebase/firebase";
 
@@ -15,20 +15,19 @@ const SignUp = () => {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      await  signupWithEmailandPassword(name, email, password);
-      toast.success("Signed Up successfully, please verify your email before login",
+    try {
+      await signupWithEmailandPassword(name, email, password);
+      toast.success(
+        "Signed Up successfully, please verify your email before login",
         {
-          onclose: ()=>navigate("/login") 
-        },
+          onclose: () => navigate("/login"),
+        }
         // navigate("/login")
       );
-      
-    }catch (error){
-      toast.error(`An error occured during signUp ${error.message}`)
+    } catch (error) {
+      toast.error(`An error occured during signUp ${error.message}`);
     }
-
-  }
+  };
 
   return (
     <div>
