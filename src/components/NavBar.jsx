@@ -1,8 +1,36 @@
-import { Link, NavLink } from "react-router-dom";
-
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase/firebase.config";
+import { toast, ToastContainer } from "react-toastify";
+import { signOut } from "firebase/auth";
 const NavBar = () => {
+  const [user] = useAuthState(auth);
+  const navigate = useNavigate();
+  const handleLogOut = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Logged out successfully..",{
+        onClose:()=>navigate("/login")
+      });
+    } catch (error) {
+      toast.error("An error occured during singOut", error);
+    }
+  };
+
   return (
     <nav className="bg-indigo-300 text-white">
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme="colored"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
@@ -58,13 +86,21 @@ const NavBar = () => {
             </div>
 
             {/* Sign Up Button */}
-            <Link to={"/signup"}>
-              <div className="hidden md:block mt-3">
+            {user ? (
+              <div onClick={handleLogOut} className="hidden md:block">
                 <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                  Sign Up
+                  Log Out
                 </button>
               </div>
-            </Link>
+            ) : (
+              <Link to={"/signup"}>
+                <div className="hidden md:block">
+                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    Sign Up
+                  </button>
+                </div>
+              </Link>
+            )}
           </div>
         </div>
       </div>

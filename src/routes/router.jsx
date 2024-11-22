@@ -7,6 +7,7 @@ import NotFound from "../pages/NotFound";
 import Users from "../pages/Users";
 import UserDetails from "../pages/UserDetails";
 import SignUp from "../pages/SignUp";
+import Login from "../pages/Login";
 //import Users from "../pages/Users";
 // import UserDetails from "../pages/UserDetails";
 // import { loadData, loadSingleData } from "../utils/utils";
@@ -46,8 +47,12 @@ const Router = createBrowserRouter([
     ],
   },
   {
-    path:"/signup",
+    path:"signup",
     element:<SignUp/>
+  },
+  {
+    path:"login",
+    element:<Login/>
   },
   {
     path: "*",

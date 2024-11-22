@@ -1,6 +1,7 @@
+/* eslint-disable no-useless-catch */
 import { createUserWithEmailAndPassword } from "firebase/auth/cordova";
 import { auth } from "./firebase.config.js";
-import { sendEmailVerification, signOut, updateProfile } from "firebase/auth";
+import { sendEmailVerification, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 
 const signupWithEmailandPassword = async (name, email, password) => {
   try {
@@ -10,13 +11,28 @@ const signupWithEmailandPassword = async (name, email, password) => {
       password
     );
     const user = response.user;
-    await updateProfile(user,{displayName:name});
-    await sendEmailVerification(user)
+    await updateProfile(user, { displayName: name });
+    await sendEmailVerification(user);
     await signOut(auth);
   } catch (error) {
-    console.error("User Registration failed an unknown error occured", error.message)
-
+    console.error(
+      "User Registration failed an unknown error occured",
+      error.message
+    );
+    throw error;
   }
 };
 
-export default signupWithEmailandPassword;
+const loginWithEmailAndPassword = async (email, password)=> {
+try{
+    const response = await signInWithEmailAndPassword(auth, email, password);
+    return response.user;
+
+}catch(error){
+    throw(error)
+}
+}
+
+
+export { signupWithEmailandPassword, loginWithEmailAndPassword};
+

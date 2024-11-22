@@ -1,26 +1,40 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import SocialLogin from "../components/SocialLogin";
+// import SocialLogin from "../components/SocialLogin";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { TEInput, TERipple } from "tw-elements-react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
-
+import { signupWithEmailandPassword } from "../firebase/firebase";
 
 const SignUp = () => {
-
- 
-
-  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      await  signupWithEmailandPassword(name, email, password);
+      toast.success("Signed Up successfully, please verify your email before login",
+        {
+          onclose: ()=>navigate("/login") 
+        },
+        // navigate("/login")
+      );
+      
+    }catch (error){
+      toast.error(`An error occured during signUp ${error.message}`)
+    }
 
- 
+  }
 
   return (
     <div>
       <ToastContainer
         position="top-center"
-        autoClose={3000}
+        autoClose={500}
         hideProgressBar={true}
         newestOnTop={false}
         closeOnClick={true}
@@ -59,11 +73,11 @@ const SignUp = () => {
 
             {/* <!-- Right column container with form --> */}
             <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
-              <form>
+              <form onSubmit={handleSubmit}>
                 {/* <!-- Name input --> */}
                 <TEInput
-                  
-                  
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
                   type="text"
                   label="Name"
                   size="lg"
@@ -73,8 +87,8 @@ const SignUp = () => {
 
                 {/* <!-- Email input --> */}
                 <TEInput
-                  
-                 
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   type="email"
                   label="Email address"
                   size="lg"
@@ -85,15 +99,17 @@ const SignUp = () => {
                 {/* <!--Password input--> */}
                 <div className="relative mb-6">
                   <TEInput
-                   
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    type={showPassword ? "text" : "password"}
                     label="Password"
                     size="lg"
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none"
                     required
                   ></TEInput>
                   <div
+                    onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
-                    
                   >
                     {showPassword ? (
                       <VscEyeClosed size={24} />
