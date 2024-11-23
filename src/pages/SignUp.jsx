@@ -131,6 +131,16 @@ const SignUp = () => {
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none"
                     required
                   ></TEInput>
+                  <div
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <VscEye size={20} />
+                    ) : (
+                      <VscEyeClosed size={20} />
+                    )}
+                  </div>
                   {/* image input  */}
                   <div className="mt-2">
                     <label
@@ -148,16 +158,7 @@ const SignUp = () => {
                       required
                     ></TEInput>
                   </div>
-                  <div
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
-                  >
-                    {showPassword ? (
-                      <VscEye size={20} />
-                    ) : (
-                      <VscEyeClosed size={20} />
-                    )}
-                  </div>
+
                   {/* error message  */}
                   <p className="text-red-400">{error}</p>
                 </div>
