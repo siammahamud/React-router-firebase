@@ -1,29 +1,34 @@
 import { NavLink, useNavigate } from "react-router-dom";
-// import SocialLogin from "../components/SocialLogin";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { TEInput, TERipple } from "tw-elements-react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
 import { signupWithEmailandPassword } from "../firebase/firebase";
+import SocialLogin from "../components/SocialLogin";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cPassword, setcPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [image, setImage] = useState(null);
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signupWithEmailandPassword(name, email, password);
-      toast.success(
-        "Signed Up successfully, please verify your email before login",
-        {
-          onclose: () => navigate("/login"),
-        }
-        // navigate("/login")
-      );
+      if (password === cPassword) {
+        await signupWithEmailandPassword(name, email, password, image);
+        toast.success(
+          "Signed Up successfully, please verify your email before login",
+          { onclose: () => navigate("/login") }
+        );
+      } else {
+        setError("Password doesn't match, please check your password...");
+      }
     } catch (error) {
       toast.error(`An error occured during signUp ${error.message}`);
     }
@@ -31,21 +36,20 @@ const SignUp = () => {
 
   return (
     <div>
-      <ToastContainer
-        position="top-center"
-        autoClose={500}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover={false}
-        theme="light"
-      />
-      <section className="mt-10">
+      <section className="mt-2">
+        <ToastContainer
+          position="top-center"
+          autoClose={500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+          theme="light"
+        />
         <div className="flex justify-end px-10">
-          <div> </div>
           <div>
             <NavLink
               to={"/"}
@@ -79,7 +83,7 @@ const SignUp = () => {
                   value={name}
                   type="text"
                   label="Name"
-                  size="lg"
+                  size="md"
                   className="mb-6"
                   required
                 ></TEInput>
@@ -90,19 +94,18 @@ const SignUp = () => {
                   value={email}
                   type="email"
                   label="Email address"
-                  size="lg"
+                  size="md"
                   className="mb-6"
                   required
                 ></TEInput>
-
-                {/* <!--Password input--> */}
+                {/* password input field  */}
                 <div className="relative mb-6">
                   <TEInput
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     type={showPassword ? "text" : "password"}
                     label="Password"
-                    size="lg"
+                    size="md"
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none"
                     required
                   ></TEInput>
@@ -111,11 +114,52 @@ const SignUp = () => {
                     className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
                   >
                     {showPassword ? (
-                      <VscEyeClosed size={24} />
+                      <VscEye size={20} />
                     ) : (
-                      <VscEye size={24} />
+                      <VscEyeClosed size={20} />
                     )}
                   </div>
+                </div>
+                {/* <!--Confirm-Password input--> */}
+                <div className="relative mb-6">
+                  <TEInput
+                    onChange={(e) => setcPassword(e.target.value)}
+                    value={cPassword}
+                    type={showPassword ? "text" : "password"}
+                    label="Confirm Password"
+                    size="md"
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none"
+                    required
+                  ></TEInput>
+                  {/* image input  */}
+                  <div className="mt-2">
+                    <label
+                      className="px-2 text-sm font-thin text-gray-500"
+                      htmlFor="image"
+                    >
+                      Profile Picture
+                    </label>
+                    <TEInput
+                      onChange={(e) => setImage(e.target.files[0])}
+                      name="image"
+                      type="file"
+                      size="sm"
+                      className=" w-full p-3 border border-gray-300 rounded-md focus:outline-none"
+                      required
+                    ></TEInput>
+                  </div>
+                  <div
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <VscEye size={20} />
+                    ) : (
+                      <VscEyeClosed size={20} />
+                    )}
+                  </div>
+                  {/* error message  */}
+                  <p className="text-red-400">{error}</p>
                 </div>
 
                 <div className="mb-6 flex items-center justify-between">
@@ -147,11 +191,7 @@ const SignUp = () => {
                     OR
                   </p>
                 </div>
-                {/* <SocialLogin
-                  onLoginWithGoogle={handleLoginWithGoogle}
-                  onLoginWithGithub={handleLoginWithGithub}
-                  onLoginWithFacebook= {handleLoginWithFacebook}
-                /> */}
+                <SocialLogin />
               </form>
             </div>
           </div>
