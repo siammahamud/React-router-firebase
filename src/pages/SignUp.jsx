@@ -4,7 +4,10 @@ import { TEInput, TERipple } from "tw-elements-react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
-import { signupWithEmailandPassword } from "../firebase/firebase";
+import {
+  loginWithGoogle,
+  signupWithEmailandPassword,
+} from "../firebase/firebase";
 import SocialLogin from "../components/SocialLogin";
 
 const SignUp = () => {
@@ -14,24 +17,29 @@ const SignUp = () => {
   const [cPassword, setcPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (password === cPassword) {
-        await signupWithEmailandPassword(name, email, password, image);
-        toast.success(
-          "Signed Up successfully, please verify your email before login",
-          { onclose: () => navigate("/login") }
+        await signupWithEmailandPassword(name, email, password);
+      toast.success(
+          "Signed Up successfully, please verify your email before login"
         );
+        navigate("/login");
       } else {
         setError("Password doesn't match, please check your password...");
       }
     } catch (error) {
       toast.error(`An error occured during signUp ${error.message}`);
     }
+  };
+
+  // google login handler function
+  const handleLoginWithGoogle = async () => {
+    await loginWithGoogle();
+    navigate("/");
   };
 
   return (
@@ -120,7 +128,9 @@ const SignUp = () => {
                     )}
                   </div>
                 </div>
+
                 {/* <!--Confirm-Password input--> */}
+
                 <div className="relative mb-6">
                   <TEInput
                     onChange={(e) => setcPassword(e.target.value)}
@@ -133,7 +143,7 @@ const SignUp = () => {
                   ></TEInput>
                   <div
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                    className="absolute top-2 right-3 flex items-center cursor-pointer"
                   >
                     {showPassword ? (
                       <VscEye size={20} />
@@ -141,24 +151,6 @@ const SignUp = () => {
                       <VscEyeClosed size={20} />
                     )}
                   </div>
-                  {/* image input  */}
-                  <div className="mt-2">
-                    <label
-                      className="px-2 text-sm font-thin text-gray-500"
-                      htmlFor="image"
-                    >
-                      Profile Picture
-                    </label>
-                    <TEInput
-                      onChange={(e) => setImage(e.target.files[0])}
-                      name="image"
-                      type="file"
-                      size="sm"
-                      className=" w-full p-3 border border-gray-300 rounded-md focus:outline-none"
-                      required
-                    ></TEInput>
-                  </div>
-
                   {/* error message  */}
                   <p className="text-red-400">{error}</p>
                 </div>
@@ -192,7 +184,7 @@ const SignUp = () => {
                     OR
                   </p>
                 </div>
-                <SocialLogin />
+                <SocialLogin onLoginWithGoogle={handleLoginWithGoogle} />
               </form>
             </div>
           </div>

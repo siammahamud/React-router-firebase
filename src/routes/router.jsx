@@ -10,13 +10,7 @@ import SignUp from "../pages/SignUp";
 import Login from "../pages/Login";
 import Reset from "../pages/Reset";
 import PrivateRoute from "./PrivateRoute";
-//import Users from "../pages/Users";
-// import UserDetails from "../pages/UserDetails";
-// import { loadData, loadSingleData } from "../utils/utils";
-// import SignUp from "../pages/SignUp";
-// import Login from "../pages/Login";
-// import Reset from "../pages/Reset";
-// import PrivateRoutes from "./PrivateRoutes";
+
 
 const Router = createBrowserRouter([
   {

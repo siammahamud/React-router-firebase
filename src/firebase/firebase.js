@@ -1,5 +1,9 @@
 /* eslint-disable no-useless-catch */
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "./firebase.config.js";
 import {
   sendEmailVerification,
@@ -8,25 +12,18 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { toast } from "react-toastify";
+const googleAuthProvider = new GoogleAuthProvider();
 
-const signupWithEmailandPassword = async (name, email, password, image) => {
-  const uploadImage = async () => {
-    const storage = getStorage();
-    const storageRef = ref(storage, `user-images/${image.name}`); // স্টোরেজ পাথে ইমেজ সংরক্ষণ
-    await uploadBytes(storageRef, image); // ইমেজ আপলোড
-    return getDownloadURL(storageRef); // ইমেজ URL রিটার্ন
-  };
+const signupWithEmailandPassword = async (name, email, password) => {
   try {
     const response = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
-    let photoURL = image ? await uploadImage(image) : null;
-    await updateProfile(user, { displayName: name, photoURL });
     const user = response.user;
-
+    await updateProfile(user, { displayName: name });
     await sendEmailVerification(user);
     await signOut(auth);
   } catch (error) {
@@ -47,6 +44,18 @@ const loginWithEmailAndPassword = async (email, password) => {
   }
 };
 
+// function for login with Google
+const loginWithGoogle = async () => {
+  try {
+    await signInWithPopup(auth, googleAuthProvider);
+    toast.success("Successfully Loged In With Google");
+  } catch (error) {
+    toast.error("An error occured during google login", error);
+  }
+};
+
+
+
 const resetPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
@@ -55,4 +64,9 @@ const resetPassword = async (email) => {
   }
 };
 
-export { signupWithEmailandPassword, loginWithEmailAndPassword, resetPassword };
+export {
+  signupWithEmailandPassword,
+  loginWithEmailAndPassword,
+  resetPassword,
+  loginWithGoogle,
+};
